@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { rotate } from 'three/examples/jsm/nodes/Nodes.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -12,7 +13,12 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 const loader = new GLTFLoader();
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+
+// Colores del cubo de Rubik
+const colors = [0xFF0000, 0x009E60, 0x0051BA, 0xFF5800, 0xFFD500, 0xFFFFFF]; // Rojo, Verde, Azul, Naranja, Amarillo, Blanco
+
+// Crear un material para cada cara del cubo
+const materials = colors.map(color => new THREE.MeshBasicMaterial({ color }));
 
 // Crear un material para las líneas
 const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
@@ -23,21 +29,82 @@ const edges = new THREE.EdgesGeometry(geometry);
 // Crear un objeto LineSegments con la geometría de bordes y el material de línea
 const lineSegments = new THREE.LineSegments(edges, lineMaterial);
 
+// Crear un arreglo para almacenar todos los cubos
+const cubes = [];
+
 // Crear y añadir múltiples cubos a la escena
 for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
         for (let z = 0; z < 3; z++) {
-            const cube = new THREE.Mesh(geometry, material);
+            const cube = new THREE.Mesh(geometry, materials);
             cube.position.set(x - 1, y - 1, z - 1);
-            scene.add(cube);
 
             // Añadir los segmentos de línea a cada cubo
             const lineSegmentsClone = lineSegments.clone();
-            lineSegmentsClone.position.set(x - 1, y - 1, z - 1);
-            scene.add(lineSegmentsClone);
+            cube.add(lineSegmentsClone); // Añadir los segmentos de línea como hijos del cubo
+
+            scene.add(cube);
+
+            // Añadir el cubo al arreglo de cubos
+            cubes.push(cube);
         }
     }
 }
+// Función para rotar una cara
+function rotateFace(axis, direction, inverse) {
+    // Filtrar los cubos que forman la cara que queremos rotar
+    const faceCubes = cubes.filter(cube => cube.position[axis] === direction);
+    let grados = (Math.PI / 4) * -1; // 90 grados
+    if (inverse)
+        grados *= -1; // Rotar en sentido contrario si inverse es verdadero
+
+    // Aplicar una rotación a cada cubo en la cara
+    faceCubes.forEach(cube => {
+        cube.rotation[axis] += grados
+    });
+}
+
+// Evento keydown para rotar las caras cuando se presionan las teclas correspondientes
+window.addEventListener('keydown', function (event) {
+    switch (event.key) {
+        case 'f':
+            rotateFace('z', 1, false);
+            break;
+        case 'F':
+            rotateFace('z', 1, true);
+            break;
+        case 'b':
+            rotateFace('z', -1, false);
+            break;
+        case 'B':
+            rotateFace('z', -1, true);
+            break;
+        case 'l':
+            rotateFace('x', -1, false);
+            break;
+        case 'L':
+            rotateFace('x', -1, true);
+            break;
+        case 'r':
+            rotateFace('x', 1, false);
+            break;
+        case 'R':
+            rotateFace('x', 1, true);
+            break;
+        case 'u':
+            rotateFace('y', 1, false);
+            break;
+        case 'U':
+            rotateFace('y', 1, true);
+            break;
+        case 'd':
+            rotateFace('y', -1, false);
+            break;
+        case 'D':
+            rotateFace('y', -1, true);
+            break;
+    }
+});
 
 camera.position.z = 5; // Posiciona la cámara para que los cubos estén en su campo de visión
 
