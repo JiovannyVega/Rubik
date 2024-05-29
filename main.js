@@ -50,18 +50,46 @@ for (let x = 0; x < 3; x++) {
         }
     }
 }
+
 // Función para rotar una cara
 function rotateFace(axis, direction, inverse) {
     // Filtrar los cubos que forman la cara que queremos rotar
     const faceCubes = cubes.filter(cube => cube.position[axis] === direction);
-    let grados = (Math.PI / 4) * -1; // 90 grados
+
+    // Crear un grupo y añadir los cubos de la cara al grupo
+    const group = new THREE.Group();
+    faceCubes.forEach(cube => {
+        scene.remove(cube);
+        group.add(cube);
+    });
+    scene.add(group);
+
+    let grados = (Math.PI / 2) * -1; // 90 grados
     if (inverse)
         grados *= -1; // Rotar en sentido contrario si inverse es verdadero
 
-    // Aplicar una rotación a cada cubo en la cara
-    faceCubes.forEach(cube => {
-        cube.rotation[axis] += grados
-    });
+    // Aplicar una rotación al grupo
+    const targetRotation = group.rotation[axis] + grados;
+
+    // Función de animación
+    function animate() {
+        if (Math.abs(targetRotation - group.rotation[axis]) > 0.01) {
+            group.rotation[axis] += (targetRotation - group.rotation[axis]) * 0.1;
+            requestAnimationFrame(animate);
+        } else {
+            group.rotation[axis] = targetRotation;
+
+            // Después de la rotación, añadir los cubos de nuevo a la escena y eliminar el grupo
+            faceCubes.forEach(cube => {
+                group.remove(cube);
+                scene.add(cube);
+                cube.rotation[axis] += grados
+            });
+            scene.remove(group);
+        }
+    }
+
+    animate();
 }
 
 // Evento keydown para rotar las caras cuando se presionan las teclas correspondientes
