@@ -29,85 +29,7 @@ function doMove(move) {
     return;
   }
   lastMoveTime = currentTime;
-  if (move === "x") {
-    for (const c of cubies) {
-      anime({
-        targets: c,
-        j: [c.j, -(c.k - (N - 1) / 2) + (N - 1) / 2],
-        k: [c.k, c.j],
-        duration: tiempo,
-        easing: 'linear',
-        update: function () {
-          c.rotations.unshift("x");
-        }
-      });
-    }
-  } else if (move === "X") {
-    for (const c of cubies) {
-      anime({
-        targets: c,
-        j: [c.j, c.k],
-        k: [c.k, -(c.j - (N - 1) / 2) + (N - 1) / 2],
-        duration: tiempo,
-        easing: 'linear',
-        update: function () {
-          c.rotations.unshift("X");
-        }
-      });
-    }
-  } else if (move === "y") {
-    for (const c of cubies) {
-      anime({
-        targets: c,
-        i: [c.i, -(c.k - (N - 1) / 2) + (N - 1) / 2],
-        k: [c.k, c.i],
-        duration: tiempo,
-        easing: 'linear',
-        update: function () {
-          c.rotations.unshift("y");
-        }
-      });
-    }
-  } else if (move === "Y") {
-    for (const c of cubies) {
-      anime({
-        targets: c,
-        i: [c.i, c.k],
-        k: [c.k, -(c.i - (N - 1) / 2) + (N - 1) / 2],
-        duration: tiempo,
-        easing: 'linear',
-        update: function () {
-          c.rotations.unshift("Y");
-        }
-      });
-    }
-  } else if (move === "z") {
-    for (const c of cubies) {
-      anime({
-        targets: c,
-        i: [c.i, -(c.j - (N - 1) / 2) + (N - 1) / 2],
-        j: [c.j, c.i],
-        duration: tiempo,
-        easing: 'linear',
-        update: function () {
-          c.rotations.unshift("z");
-        }
-      });
-    }
-  } else if (move === "Z") {
-    for (const c of cubies) {
-      anime({
-        targets: c,
-        i: [c.i, c.j],
-        j: [c.j, -(c.i - (N - 1) / 2) + (N - 1) / 2],
-        duration: tiempo,
-        easing: 'linear',
-        update: function () {
-          c.rotations.unshift("Z");
-        }
-      });
-    }
-  } else if (move === "r") {
+  if (move === "r") {
     for (const c of cubies) {
       if (c.i === N - 1) {
         anime({
@@ -115,11 +37,9 @@ function doMove(move) {
           j: [c.j, -(c.k - (N - 1) / 2) + (N - 1) / 2],
           k: [c.k, c.j],
           duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("x");
-          }
+          easing: 'linear'
         });
+        c.rotations.unshift("x");
       }
     }
   } else if (move === "R") {
@@ -131,25 +51,8 @@ function doMove(move) {
           k: [c.k, -(c.j - (N - 1) / 2) + (N - 1) / 2],
           duration: tiempo,
           easing: 'linear',
-          update: function () {
-            c.rotations.unshift("X");
-          }
         });
-      }
-    }
-  } else if (move === "l") {
-    for (const c of cubies) {
-      if (c.i === 0) {
-        anime({
-          targets: c,
-          j: [c.j, -(c.k - (N - 1) / 2) + (N - 1) / 2],
-          k: [c.k, c.j],
-          duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("x");
-          }
-        });
+        c.rotations.unshift("x'");
       }
     }
   } else if (move === "L") {
@@ -157,89 +60,77 @@ function doMove(move) {
       if (c.i === 0) {
         anime({
           targets: c,
+          j: [c.j, -(c.k - (N - 1) / 2) + (N - 1) / 2],
+          k: [c.k, c.j],
+          duration: tiempo,
+          easing: 'linear'
+        });
+        c.rotations.unshift("x");
+      }
+    }
+  } else if (move === "l") {
+    for (const c of cubies) {
+      if (c.i === 0) {
+        anime({
+          targets: c,
           j: [c.j, c.k],
           k: [c.k, -(c.j - (N - 1) / 2) + (N - 1) / 2],
           duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("X");
-          }
+          easing: 'linear'
         });
-      }
-    }
-  } else if (move === "u") {
-    for (const c of cubies) {
-      if (c.j === N - 1) {
-        anime({
-          targets: c,
-          i: [c.i, -(c.k - (N - 1) / 2) + (N - 1) / 2],
-          k: [c.k, c.i],
-          duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("y");
-          }
-        });
-      }
-    }
-  } else if (move === "U") {
-    for (const c of cubies) {
-      if (c.j === N - 1) {
-        anime({
-          targets: c,
-          i: [c.i, c.k],
-          k: [c.k, -(c.i - (N - 1) / 2) + (N - 1) / 2],
-          duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("Y");
-          }
-        });
-      }
-    }
-  } else if (move === "d") {
-    for (const c of cubies) {
-      if (c.j === 0) {
-        anime({
-          targets: c,
-          i: [c.i, -(c.k - (N - 1) / 2) + (N - 1) / 2],
-          k: [c.k, c.i],
-          duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("y");
-          }
-        });
+        c.rotations.unshift("x'");
       }
     }
   } else if (move === "D") {
     for (const c of cubies) {
+      if (c.j === N - 1) {
+        anime({
+          targets: c,
+          i: [c.i, -(c.k - (N - 1) / 2) + (N - 1) / 2],
+          k: [c.k, c.i],
+          duration: tiempo,
+          easing: 'linear'
+        });
+        c.rotations.unshift("y");
+      }
+    }
+  } else if (move === "d") {
+    for (const c of cubies) {
+      if (c.j === N - 1) {
+        anime({
+          targets: c,
+          i: [c.i, c.k],
+          k: [c.k, -(c.i - (N - 1) / 2) + (N - 1) / 2],
+          duration: tiempo,
+          easing: 'linear'
+        });
+        c.rotations.unshift("y'");
+      }
+    }
+  } else if (move === "u") {
+    for (const c of cubies) {
+      if (c.j === 0) {
+        anime({
+          targets: c,
+          i: [c.i, -(c.k - (N - 1) / 2) + (N - 1) / 2],
+          k: [c.k, c.i],
+          duration: tiempo,
+          easing: 'linear'
+        });
+        c.rotations.unshift("y");
+      }
+    }
+  } else if (move === "U") {
+    for (const c of cubies) {
       if (c.j === 0) {
         anime({
           targets: c,
           i: [c.i, c.k],
           k: [c.k, -(c.i - (N - 1) / 2) + (N - 1) / 2],
           duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("Y");
-          }
+          easing: 'linear'
         });
-      }
-    }
-  } else if (move === "f") {
-    for (const c of cubies) {
-      if (c.k === N - 1) {
-        anime({
-          targets: c,
-          j: [c.j, -(c.i - (N - 1) / 2) + (N - 1) / 2],
-          i: [c.i, c.j],
-          duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("z");
-          }
-        });
+        c.rotations.unshift("y'");
       }
     }
   } else if (move === "F") {
@@ -247,14 +138,25 @@ function doMove(move) {
       if (c.k === N - 1) {
         anime({
           targets: c,
+          j: [c.j, -(c.i - (N - 1) / 2) + (N - 1) / 2],
+          i: [c.i, c.j],
+          duration: tiempo,
+          easing: 'linear'
+        });
+        c.rotations.unshift("z'");
+      }
+    }
+  } else if (move === "f") {
+    for (const c of cubies) {
+      if (c.k === N - 1) {
+        anime({
+          targets: c,
           j: [c.j, c.i],
           i: [c.i, -(c.j - (N - 1) / 2) + (N - 1) / 2],
           duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("Z");
-          }
+          easing: 'linear'
         });
+        c.rotations.unshift("z");
       }
     }
   } else if (move === "b") {
@@ -265,11 +167,9 @@ function doMove(move) {
           j: [c.j, -(c.i - (N - 1) / 2) + (N - 1) / 2],
           i: [c.i, c.j],
           duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("z");
-          }
+          easing: 'linear'
         });
+        c.rotations.unshift("z'");
       }
     }
   } else if (move === "B") {
@@ -280,11 +180,9 @@ function doMove(move) {
           j: [c.j, c.i],
           i: [c.i, -(c.j - (N - 1) / 2) + (N - 1) / 2],
           duration: tiempo,
-          easing: 'linear',
-          update: function () {
-            c.rotations.unshift("Z");
-          }
+          easing: 'linear'
         });
+        c.rotations.unshift("z");
       }
     }
   }
