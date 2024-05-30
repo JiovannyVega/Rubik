@@ -11,14 +11,24 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-const loader = new GLTFLoader();
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+const loader2 = new GLTFLoader();
+const geometry = new THREE.BoxGeometry(1, 1, 1); const loader = new THREE.TextureLoader();
+
+// Asegúrate de reemplazar 'ruta/a/imagen1.png' con la ruta a tus imágenes
+const textures = [
+    './imagenes/Imagen1.png',
+    './imagenes/descarga.gif',
+    '/imagenes/images.jpg',
+    './imagenes/flor.jpg',
+    './imagenes/gato.png',
+    './imagenes/cebolla.jpg'
+].map(image => loader.load(image));
 
 // Colores del cubo de Rubik
 const colors = [0xFF0000, 0x009E60, 0x0051BA, 0xFF5800, 0xFFD500, 0xFFFFFF]; // Rojo, Verde, Azul, Naranja, Amarillo, Blanco
 
 // Crear un material para cada cara del cubo
-const materials = colors.map(color => new THREE.MeshBasicMaterial({ color }));
+const materials = textures.map(texture => new THREE.MeshBasicMaterial({ map: texture }));
 
 // Crear un material para las líneas
 const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
